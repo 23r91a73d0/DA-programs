@@ -1,0 +1,27 @@
+import numpy as np
+import pandas as pd
+
+# Create original (complete) data
+data = pd.DataFrame({
+    "Age": [40, 45, 50, 55],
+    "Income": [50000, 60000, 70000, 80000]
+})
+
+print("Original Data:")
+print(data)
+
+# Introduce MNAR missing values
+# Income is missing when income is high (depends on its own value)
+data_mnar = data.copy()
+
+for i in range(len(data_mnar)):
+    if data_mnar.loc[i, "Income"] > 50000:
+        if np.random.rand() < 0.6:   # higher income → more missing
+            data_mnar.loc[i, "Income"] = np.nan
+
+print("\nData with MNAR Missing Values:")
+print(data_mnar)
+
+# Count missing values
+print("\nMissing Value Count:")
+print(data_mnar.isnull().sum())
