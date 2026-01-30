@@ -1,0 +1,32 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.linear_model import LinearRegression
+#step 1:Create ithe Dataset
+data={
+    'Age':[25,30,22,40,35],
+    'Salary':[50000,54000,58000,61000,59000],
+}
+df=pd.DataFrame(data)
+print("original Data:\n",df)
+#step 2:split data into Features(X) and Target(Y)
+X=df[['Age']]
+Y=df[['Salary']]
+#step 3:create and train linear regression model
+model=LinearRegression()
+model.fit(X,Y)
+#print model parameters
+print("model parameters:")
+print("slope(coefficient):", model.coef_[0])
+print("Intercept:",model.intercept_)
+#step 4: make predictions
+predicted_salary=model.predict(X)
+#step 5:plot Regression Line
+plt.scatter(df['Age'],df['Salary'],color='blue',label='Actual Data')
+plt.plot(df['Age'],predicted_salary,color='red',label='Regression Line')
+plt.xlabel('Age')
+plt.ylabel('Salary')
+plt.title('linear regression:Age vs Salary')
+plt.legend()
+plt.grid(True)
+plt.show()
