@@ -1,0 +1,27 @@
+import numpy as np
+import pandas as pd
+
+# Create original (complete) data
+data = pd.DataFrame({
+    "Age": [22, 25, 28, 35],
+    "Income": [20000, 25000, 30000, 40000]
+})
+
+print("Original Data:")
+print(data)
+
+# Introduce MAR missing values
+# Income is missing more often for younger people (depends on Age)
+data_mar = data.copy()
+
+for i in range(len(data_mar)):
+    if data_mar.loc[i, "Age"] < 30:
+        if np.random.rand() < 0.5:   # higher chance of missing
+            data_mar.loc[i, "Income"] = np.nan
+
+print("\nData with MAR Missing Values:")
+print(data_mar)
+
+# Count missing values
+print("\nMissing Value Count:")
+print(data_mar.isnull().sum())
