@@ -1,0 +1,33 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.linear_model import LogisticRegression
+#step 1:Create the Dataset
+data={
+    'Age':[25,30,22,40,35],
+    'Salary':[50000,54000,58000,61000,59000],
+}
+df=pd.DataFrame(data)
+print("original Data:\n",df)
+#step 2:convert salary to classes
+df['HighSalary']=(df['Salary']>=58000).astype(int) # Corrected typo: HidhSalary -> HighSalary
+X=df[['Age']]
+Y=df['HighSalary'] # Corrected: Y should be the binary target variable for logistic regression
+#step 3:create logistic regression model
+log_model=LogisticRegression()
+log_model.fit(X,Y)
+print("model coefficient:",log_model.coef_[0],[0])
+print("model Intercept:", log_model.intercept_[0])
+#step 4: prepare age range for plot (with feature name)
+age_range=np.linspace(df['Age'].min(),df['Age'].max(),200)
+age_df=pd.DataFrame({'Age':age_range})
+probabilities=log_model.predict_proba(age_df)[:,1]
+#step 5:plot logistic Regression Curve
+plt.scatter(df['Age'],df['HighSalary'],color='blue',label='Actual Data')
+plt.plot(age_range,probabilities,color='red',label='Regression Line') # Corrected: used age_range for x-axis
+plt.xlabel('Age')
+plt.ylabel('Salary')
+plt.title('logistic regression:Age vs highSalary probability')
+plt.legend()
+plt.grid(True)
+plt.show()
